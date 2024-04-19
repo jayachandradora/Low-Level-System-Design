@@ -181,3 +181,4 @@ public class Client {
 }
 
 ```
+This code provides a basic framework for a real-time chat application. The Message class represents a chat message. The Server class manages client connections and broadcasts messages to all connected clients. The Client class represents a chat client, which can send and receive messages from the server. Each client runs in its own thread to handle both sending and receiving messages asynchronously.
