@@ -19,7 +19,7 @@ Designing an Online Learning Management System (LMS) involves managing various c
   
 **2.  Instructor creates an assignment:**
 *  Instructor creates an assignment for a course.
-*LearningManagementSystem adds the assignment to the course.
+*  LearningManagementSystem adds the assignment to the course.
 
 **3.  Student submits an assignment:**
 *  Student completes an assignment and submits it.
