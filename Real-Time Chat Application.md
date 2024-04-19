@@ -1,3 +1,31 @@
+
+let's break down the low-level design of a real-time chat application using Java. We'll focus on the components and their interactions.
+
+## Components:
+
+Client:
+Sends messages to the server.
+Receives messages from the server.
+Displays messages to the user.
+
+Server:
+Listens for incoming connections from clients.
+Manages client connections.
+Broadcasts messages to all connected clients.
+Message:
+Represents a chat message.
+Contains sender information, message content, timestamp, etc.
+
+## Interactions:
+
+Client to Server:
+Client sends a message to the server.
+Server receives the message and broadcasts it to all connected clients.
+Server to Client:
+Server receives a message from a client.
+Server broadcasts the message to all connected clients.
+Each client receives the message and displays it to the user.
+
 ```ruby
 
 // Message.java
