@@ -1,4 +1,4 @@
-# Booking System involves
+# Flight Booking System 
 
 Designing a Flight Booking System involves several components like flights, passengers, bookings, and the system itself to manage these entities. Here's a low-level design example in Java:
 
@@ -11,7 +11,7 @@ Designing a Flight Booking System involves several components like flights, pass
 
 ## Interactions:
 
-Passenger books a flight:<br />
+Passenger books a flight.<br />
 Passenger selects a flight and provides necessary details.<br />
 FlightManager checks availability and creates a booking if seats are available.<br />
 Booking confirmation is sent to the passenger.<br />
