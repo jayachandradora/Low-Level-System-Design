@@ -2,12 +2,12 @@
 
 Designing an Online Banking System involves managing various components such as users, accounts, transactions, and the system itself to facilitate banking operations. Here's a low-level design example in Java:
 
-##Components:
+## Components:
 
-**1.  User:** Represents a user of the system with details like name, contact information, etc.
-**2.  Account:** Represents a bank account with details like account number, balance, account type, etc.
-**3.  Transaction:** Represents a transaction made on an account with details like transaction ID, amount, type, timestamp, etc.
-**4.  BankingSystem:** Manages users, accounts, transactions, and facilitates banking operations.
+**1.  User:** Represents a user of the system with details like name, contact information, etc. <br />
+**2.  Account:** Represents a bank account with details like account number, balance, account type, etc. <br />
+**3.  Transaction:** Represents a transaction made on an account with details like transaction ID, amount, type, timestamp, etc. <br />
+**4.  BankingSystem:** Manages users, accounts, transactions, and facilitates banking operations. <br />
 
 ## Interactions:
 
