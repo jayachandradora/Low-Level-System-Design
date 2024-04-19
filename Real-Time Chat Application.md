@@ -1,4 +1,4 @@
-'''ruby
+```ruby
 
 // Message.java
 import java.io.Serializable;
@@ -148,4 +148,4 @@ public class Client {
     }
 }
 
-'''
+```
