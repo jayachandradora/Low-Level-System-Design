@@ -88,10 +88,11 @@ class FlightManager {
 ```
 In this design:
 
-The Flight class represents a flight with details like flight number, origin, destination, etc.
-The Passenger class represents a passenger with details like name, age, contact information, etc.
-The Booking class represents a booking made by a passenger for a particular flight.
-The FlightManager class manages flights available and bookings made. It provides methods to add flights, book flights, cancel bookings, and retrieve bookings.
+*     The Flight class represents a flight with details like flight number, origin, destination, etc.
+*     The Passenger class represents a passenger with details like name, age, contact information, etc.
+*     The Booking class represents a booking made by a passenger for a particular flight.
+*     The FlightManager class manages flights available and bookings made.
+*     It provides methods to add flights, book flights, cancel bookings, and retrieve bookings.
 
 This is a basic example. In a real-world scenario, you would need to consider additional features like payment processing, seat selection, authentication, and more. Additionally, error handling,
 concurrency control, and database integration would be crucial for a production-level system.
