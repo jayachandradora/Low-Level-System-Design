@@ -2,10 +2,10 @@ Designing a Flight Booking System involves several components like flights, pass
 
 ## Components:
 
-Flight: Represents a flight with details like flight number, origin, destination, departure time, etc. <br />
-Passenger: Represents a passenger with details like name, age, contact information, etc. <br />
-Booking: Represents a booking made by a passenger for a particular flight. <br />
-FlightManager: Manages the flights available, bookings made, and facilitates booking operations.<br />
+**Flight:** Represents a flight with details like flight number, origin, destination, departure time, etc. <br />
+**Passenger:** Represents a passenger with details like name, age, contact information, etc. <br />
+**Booking:** Represents a booking made by a passenger for a particular flight. <br />
+**FlightManager:** Manages the flights available, bookings made, and facilitates booking operations.<br />
 
 ## Interactions:
 
