@@ -1,20 +1,20 @@
 # Low-Level-System-Design
 * ### Parking Lot Management System: 
-                        Design a system that manages a parking lot, including functionalities such as allocating parking slots, tracking vehicle entry and exit, and calculating parking fees.
+  Design a system that manages a parking lot, including functionalities such as allocating parking slots, tracking vehicle entry and exit, and calculating parking fees.
   
 * ### Elevator Control System:
-                        Design the control system for an elevator, considering factors such as efficient handling of elevator requests, optimizing elevator movement to minimize wait times, and ensuring safety.
+  Design the control system for an elevator, considering factors such as efficient handling of elevator requests, optimizing elevator movement to minimize wait times, and ensuring safety.
   		
 * ### Library Management System:
-                          Design a system for managing a library, including functionalities such as cataloging books, tracking loaned books, managing user accounts, and generating reports.
+  Design a system for managing a library, including functionalities such as cataloging books, tracking loaned books, managing user accounts, and generating reports.
   
-* 		Hotel Reservation System:
-                          Design a system for managing hotel reservations, including functionalities such as room booking, check-in/check-out processes, managing room availability, and handling payments.
+* ### Hotel Reservation System:
+  Design a system for managing hotel reservations, including functionalities such as room booking, check-in/check-out processes, managing room availability, and handling payments.
   		
-* 		ATM (Automated Teller Machine) System:
-                          Design the software for an ATM, including functionalities such as user authentication, handling cash withdrawals and deposits, displaying account balances, and printing receipts.
+* ### ATM (Automated Teller Machine) System:
+  Design the software for an ATM, including functionalities such as user authentication, handling cash withdrawals and deposits, displaying account balances, and printing receipts.
   		
-* 		Flight Booking System:
+* ### Flight Booking System:
                           Design a system for booking flights, including functionalities such as searching for available flights, selecting seats, making reservations, and processing payments.
   		
 * 		Online Shopping Cart:
