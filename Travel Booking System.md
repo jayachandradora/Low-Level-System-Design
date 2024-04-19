@@ -1,3 +1,5 @@
+# Travel Booking System
+
 Designing a Travel Booking System requires managing various components like users, bookings, accommodations, flights, and other travel services. Here's a low-level design example in Java:
 
 ## Components:
@@ -6,7 +8,7 @@ Designing a Travel Booking System requires managing various components like user
 **2. Accommodation**: Represents a place to stay with details like name, address, price, availability, etc. <br />
 **3, Flight:** Represents a flight with details like flight number, origin, destination, departure time, etc. <br />
 **4. Booking:** Represents a booking made by a user for accommodation, flight, or other services. <br />
-**TravelServiceManager:** Manages accommodations, flights, bookings, and facilitates booking operations. <br />
+**5. TravelServiceManager:** Manages accommodations, flights, bookings, and facilitates booking operations. <br />
 
 ## Interactions:
 
