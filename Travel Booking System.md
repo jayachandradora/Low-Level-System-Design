@@ -2,11 +2,11 @@ Designing a Travel Booking System requires managing various components like user
 
 ## Components:
 
-**1. User:** Represents a user of the system with details like name, contact information, etc.
-**2. Accommodation**: Represents a place to stay with details like name, address, price, availability, etc.
-**3, Flight:** Represents a flight with details like flight number, origin, destination, departure time, etc.
-**4. Booking:** Represents a booking made by a user for accommodation, flight, or other services.
-**TravelServiceManager:** Manages accommodations, flights, bookings, and facilitates booking operations.
+**1. User:** Represents a user of the system with details like name, contact information, etc. <br />
+**2. Accommodation**: Represents a place to stay with details like name, address, price, availability, etc. <br />
+**3, Flight:** Represents a flight with details like flight number, origin, destination, departure time, etc. <br />
+**4. Booking:** Represents a booking made by a user for accommodation, flight, or other services. <br />
+**TravelServiceManager:** Manages accommodations, flights, bookings, and facilitates booking operations. <br />
 
 ## Interactions:
 
