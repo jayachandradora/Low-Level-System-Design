@@ -9,14 +9,14 @@ Designing a Flight Booking System involves several components like flights, pass
 
 ## Interactions:
 
-Passenger books a flight:
-Passenger selects a flight and provides necessary details.
-FlightManager checks availability and creates a booking if seats are available.
-Booking confirmation is sent to the passenger.
-FlightManager manages flights and bookings:
-Manages the list of available flights.
-Manages the list of bookings made for each flight.
-Handles booking operations like adding, cancelling, or modifying bookings.
+Passenger books a flight:<br />
+Passenger selects a flight and provides necessary details.<br />
+FlightManager checks availability and creates a booking if seats are available.<br />
+Booking confirmation is sent to the passenger.<br />
+FlightManager manages flights and bookings:<br />
+Manages the list of available flights.<br />
+Manages the list of bookings made for each flight.<br />
+Handles booking operations like adding, cancelling, or modifying bookings.<br />
 
 ```ruby
 import java.util.*;
