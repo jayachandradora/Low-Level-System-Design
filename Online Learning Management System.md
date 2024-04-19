@@ -140,12 +140,13 @@ class LearningManagementSystem {
 
 In this design:
 
-The Course class represents a course with details like course ID, title, instructor, etc.
-The Student class represents a student enrolled in the system with details like student ID, name, etc.
-The Instructor class represents an instructor with details like instructor ID, name, etc.
-The Assignment class represents an assignment associated with a course.
-The Grade class represents the grade of a student for an assignment.
-The LearningManagementSystem class manages courses, students, instructors, assignments, grades, and facilitates learning activities.
+The **Course** class represents a course with details like course ID, title, instructor, etc. <br />
+The **Student** class represents a student enrolled in the system with details like student ID, name, etc. <br />
+The **Instructor** class represents an instructor with details like instructor ID, name, etc. <br />
+The **Assignment** class represents an assignment associated with a course. <br />
+The **Grade** class represents the grade of a student for an assignment. <br />
+The **LearningManagementSystem** class manages courses, students, instructors, assignments, grades, and facilitates learning activities. <br />
+
 This is a basic example. In a real-world scenario, you would need to consider additional features like authentication, authorization, encryption for sensitive information, concurrency control, logging, and database integration for data persistence. Additionally, you may need to handle various types of courses (e.g., lectures, quizzes, exams), discussions, notifications, and more.
 
 
