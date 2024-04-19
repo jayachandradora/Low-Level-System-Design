@@ -121,11 +121,11 @@ class TravelServiceManager {
 ```
 In this design:
 
-*  The User class represents a user of the system with details like name and contact information.
-*  The Accommodation class represents a place to stay with details like name, address, etc.
-*  The Flight class represents a flight with details like flight number, origin, destination, etc.
-*  The Booking class represents a booking made by a user for accommodation, flight, or other services.
-*  The TravelServiceManager class manages accommodations, flights, bookings, and facilitates booking operations.
+*  The **User** class represents a user of the system with details like name and contact information.
+*  The **Accommodation** class represents a place to stay with details like name, address, etc.
+*  The **Flight** class represents a flight with details like flight number, origin, destination, etc.
+*  The **Booking** class represents a booking made by a user for accommodation, flight, or other services.
+*  The **TravelServiceManager** class manages accommodations, flights, bookings, and facilitates booking operations.
 
 This is a basic example. In a real-world scenario, you would need to consider additional features like payment processing, search and filtering options, authentication, and more. Additionally, error handling, concurrency control, and database integration would be crucial for a production-level system.
 
