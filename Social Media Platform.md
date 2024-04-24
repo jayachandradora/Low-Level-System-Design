@@ -25,6 +25,89 @@ Designing a Social Media Platform involves managing various components such as u
 *  User likes a post or comment.
 *  SocialMediaPlatform records the like and updates the like count.
 
+
+<details>
+  <summary> Click for Endity and Models</summary>
+
+  ```ruby
+
+@Entity
+public class User {
+    @Id
+    private String userId;
+    private String name;
+    private String contactInfo;
+
+    @OneToMany(mappedBy = "author")
+    private List<Post> posts;
+
+    @ManyToMany(mappedBy = "followers")
+    private List<User> followers;
+
+    // Constructors, getters, and setters
+}
+
+@Entity
+public class Post {
+    @Id
+    private String postId;
+    private String content;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User author;
+
+    private Date timestamp;
+
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments;
+
+    private int likeCount;
+    // Constructors, getters, and setters
+}
+
+
+@Entity
+public class Comment {
+    @Id
+    private String commentId;
+    private String content;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User author;
+
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
+
+    private Date timestamp;
+    // Constructors, getters, and setters
+}
+
+@Entity
+public class Like {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID likeId;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
+
+    @ManyToOne
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
+
+    // Constructors, getters, and setters
+}
+  ```
+</details>
+
 <details>
   <summary>Click to expand</summary>
   
