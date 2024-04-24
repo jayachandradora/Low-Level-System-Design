@@ -108,13 +108,12 @@ public class Like {
   ```
 </details>
 <details>
-  <summary>Click to expand</summary>
+  <summary>Expand for Scripts</summary>
   
 ```ruby
  In the Like entity:
 * We added annotations to establish many-to-one relationships with User, Post, and Comment entities.
 * Each relationship is mapped by a foreign key column in the likes table (user_id, post_id, comment_id).
-
 
 Scripts
 
@@ -158,9 +157,7 @@ CREATE TABLE likes (
     FOREIGN KEY (comment_id) REFERENCES comments(comment_id)
 );
 
-
 In the Like entity, the mappedBy attribute is not used because it does not have a bidirectional relationship with any other entity. Instead, it defines three @ManyToOne relationships with the User, Post, and Comment entities, mapping the user, post, and comment fields respectively.
-
 
 CREATE TABLE followers (
     user_id VARCHAR(255),
@@ -193,49 +190,10 @@ In this script:
 
 
 <details>
-  <summary>Click to expand</summary>
+  <summary>Expand Service Class and Business Logic </summary>
   
 ```ruby
 import java.util.*;
-
-class User {
-    private String userId;
-    private String name;
-    private String contactInfo;
-    private List<User> followers;
-    private List<Post> posts;
-
-    // Constructor, getters and setters
-}
-
-class Post {
-    private String postId;
-    private String content;
-    private User author;
-    private Date timestamp;
-    private List<Comment> comments;
-    private int likeCount;
-
-    // Constructor, getters and setters
-}
-
-class Comment {
-    private String commentId;
-    private String content;
-    private User author;
-    private Date timestamp;
-
-    // Constructor, getters and setters
-}
-
-class Like {
-    private String likeId;
-    private User user;
-    private Post post;
-    private Comment comment;
-
-    // Constructor, getters and setters
-}
 
 class SocialMediaPlatform {
     private Map<String, User> users;
