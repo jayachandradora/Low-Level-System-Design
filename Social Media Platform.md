@@ -271,8 +271,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LikeRepository extends JpaRepository<Comment, String> {
 }
-  ```
+```
 </details>
+
 In this design:
 
 The **User** class represents a user of the platform with details like user ID, name, contact information, etc. <br />
