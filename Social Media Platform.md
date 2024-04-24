@@ -243,7 +243,9 @@ class SocialMediaPlatform {
 
 <details>
   <summary> Click for Repository Information</summary>
+  
   ```ruby
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -271,7 +273,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LikeRepository extends JpaRepository<Comment, String> {
 }
+
 ```
+
 </details>
 
 In this design:
