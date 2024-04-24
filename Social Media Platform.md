@@ -107,6 +107,90 @@ public class Like {
 }
   ```
 </details>
+<details>
+  <summary>Click to expand</summary>
+  
+```ruby
+ In the Like entity:
+* We added annotations to establish many-to-one relationships with User, Post, and Comment entities.
+* Each relationship is mapped by a foreign key column in the likes table (user_id, post_id, comment_id).
+
+
+Scripts
+
+CREATE TABLE users (
+    user_id VARCHAR(255) PRIMARY KEY,
+    name VARCHAR(255),
+    contact_info VARCHAR(255)
+);
+
+In the User entity, the mappedBy = "author" attribute in the @OneToMany annotation indicates that the User entity is the inverse side of the relationship with the Post entity. It correctly maps the posts field in the User entity to the author field in the Post entity.
+
+CREATE TABLE posts (
+    post_id VARCHAR(255) PRIMARY KEY,
+    content TEXT,
+    user_id VARCHAR(255),
+    timestamp TIMESTAMP,
+    like_count INT,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+In the Post entity, the mappedBy = "post" attribute in the @OneToMany annotation indicates that the Post entity is the inverse side of the relationship with the Comment entity. It correctly maps the comments field in the Post entity to the post field in the Comment entity.
+
+CREATE TABLE comments (
+    comment_id VARCHAR(255) PRIMARY KEY,
+    content TEXT,
+    user_id VARCHAR(255),
+    post_id VARCHAR(255),
+    timestamp TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (post_id) REFERENCES posts(post_id)
+); 
+In the Comment entity, the mappedBy attribute is not needed because it does not have a bidirectional relationship with any other entity. Instead, it defines two @ManyToOne relationships with the User and Post entities, mapping the author and post fields respectively.
+
+CREATE TABLE likes (
+    like_id UUID PRIMARY KEY,
+    user_id VARCHAR(255),
+    post_id VARCHAR(255),
+    comment_id VARCHAR(255),
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (post_id) REFERENCES posts(post_id),
+    FOREIGN KEY (comment_id) REFERENCES comments(comment_id)
+);
+
+
+In the Like entity, the mappedBy attribute is not used because it does not have a bidirectional relationship with any other entity. Instead, it defines three @ManyToOne relationships with the User, Post, and Comment entities, mapping the user, post, and comment fields respectively.
+
+
+CREATE TABLE followers (
+    user_id VARCHAR(255),
+    follower_id VARCHAR(255),
+    PRIMARY KEY (user_id, follower_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (follower_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE user_posts (
+    post_id VARCHAR(255) PRIMARY KEY,
+    user_id VARCHAR(255) REFERENCES users(user_id)
+);
+
+1. Followers table will represent the many-to-many relationship between users and their followers.
+
+In this script:
+* The followers table represents the many-to-many relationship between users and their followers.
+* It has two columns: user_id and follower_id, both of which are foreign keys referencing the user_id column in the users table.
+* The combination of user_id and follower_id is the primary key to ensure that a user cannot have duplicate followers.
+
+2. User-Posts Relationship table will represent the one-to-many relationship between users and their posts.
+
+In this script:
+* The user_posts table represents the one-to-many relationship between users and their posts.
+* It has two columns: post_id and user_id, where user_id is a foreign key referencing the user_id column in the users table.
+
+```
+</details>
+
 
 <details>
   <summary>Click to expand</summary>
