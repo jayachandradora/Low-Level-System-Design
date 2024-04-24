@@ -240,6 +240,39 @@ class SocialMediaPlatform {
 }
 ```
 </details>
+
+<details>
+  <summary> Click for Repository Information</summary>
+  ```ruby
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, String> {
+}
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface PostRepository extends JpaRepository<Post, String> {
+}
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface CommentRepository extends JpaRepository<Comment, String> {
+}
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface LikeRepository extends JpaRepository<Comment, String> {
+}
+  ```
+</details>
 In this design:
 
 The **User** class represents a user of the platform with details like user ID, name, contact information, etc. <br />
