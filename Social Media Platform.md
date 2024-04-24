@@ -25,6 +25,9 @@ Designing a Social Media Platform involves managing various components such as u
 *  User likes a post or comment.
 *  SocialMediaPlatform records the like and updates the like count.
 
+<details>
+  <summary>Click to expand</summary>
+  
 ```ruby
 import java.util.*;
 
@@ -111,7 +114,7 @@ class SocialMediaPlatform {
     // Other methods for user-specific operations, post-specific operations, etc.
 }
 ```
-
+</details>
 In this design:
 
 The **User** class represents a user of the platform with details like user ID, name, contact information, etc. <br />
