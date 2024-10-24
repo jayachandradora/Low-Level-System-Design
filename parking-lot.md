@@ -190,3 +190,158 @@ public class ParkingLot {
 ### Conclusion
 
 This parking lot design in Java demonstrates key principles of object-oriented programming and encapsulation. The simplicity of the design makes it easy to understand and implement, while trade-offs related to performance, scalability, and concurrency should be carefully considered for production-level systems.
+
+## To enhance the flexibility of the parking lot system using the Strategy and Factory design patterns
+
+To enhance the flexibility of the parking lot system using the **Strategy** and **Factory** design patterns, we can separate the concerns of vehicle parking behavior and vehicle creation. This allows us to easily add new types of vehicles or change the parking strategy without modifying existing code.
+
+### Applying the Factory Pattern
+
+First, let's implement a **VehicleFactory** that creates different types of vehicles. This will allow us to easily add new vehicle types in the future without modifying the existing logic.
+
+#### VehicleFactory Class
+
+```java
+public class VehicleFactory {
+    public static Vehicle createVehicle(String type, String licensePlate) {
+        switch (type.toLowerCase()) {
+            case "car":
+                return new Car(licensePlate);
+            case "bike":
+                return new Bike(licensePlate);
+            case "truck":
+                return new Truck(licensePlate);
+            default:
+                throw new IllegalArgumentException("Unknown vehicle type: " + type);
+        }
+    }
+}
+```
+
+### Applying the Strategy Pattern
+
+Next, let's define a **ParkingStrategy** interface to encapsulate different parking behaviors. We can then implement various strategies for parking vehicles.
+
+#### ParkingStrategy Interface
+
+```java
+public interface ParkingStrategy {
+    boolean parkVehicle(Vehicle vehicle, List<ParkingSpot> spots);
+}
+```
+
+#### Concrete Parking Strategies
+
+For example, let's implement two strategies: **FirstFitParkingStrategy** and **BestFitParkingStrategy**.
+
+**FirstFitParkingStrategy**:
+
+```java
+public class FirstFitParkingStrategy implements ParkingStrategy {
+    @Override
+    public boolean parkVehicle(Vehicle vehicle, List<ParkingSpot> spots) {
+        for (ParkingSpot spot : spots) {
+            if (spot.park(vehicle)) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+```
+
+**BestFitParkingStrategy**:
+
+```java
+public class BestFitParkingStrategy implements ParkingStrategy {
+    @Override
+    public boolean parkVehicle(Vehicle vehicle, List<ParkingSpot> spots) {
+        ParkingSpot bestSpot = null;
+        for (ParkingSpot spot : spots) {
+            if (spot.isAvailable() && spot.getSize() == vehicle.getSize()) {
+                if (bestSpot == null || bestSpot.getSize().ordinal() > spot.getSize().ordinal()) {
+                    bestSpot = spot;
+                }
+            }
+        }
+        return bestSpot != null && bestSpot.park(vehicle);
+    }
+}
+```
+
+### Modifying the ParkingLot Class
+
+Now, we need to modify the `ParkingLot` class to use the `ParkingStrategy`:
+
+```java
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+public class ParkingLot {
+    private List<ParkingSpot> spots;
+    private Map<String, Vehicle> parkedVehicles;
+    private ParkingStrategy parkingStrategy;
+
+    public ParkingLot(int numCompact, int numLarge, int numMotorcycle, ParkingStrategy strategy) {
+        this.spots = new ArrayList<>();
+        this.parkedVehicles = new HashMap<>();
+        this.parkingStrategy = strategy;
+
+        for (int i = 0; i < numCompact; i++) {
+            spots.add(new ParkingSpot(VehicleSize.COMPACT));
+        }
+        for (int i = 0; i < numLarge; i++) {
+            spots.add(new ParkingSpot(VehicleSize.LARGE));
+        }
+        for (int i = 0; i < numMotorcycle; i++) {
+            spots.add(new ParkingSpot(VehicleSize.MOTORCYCLE));
+        }
+    }
+
+    public boolean parkVehicle(Vehicle vehicle) {
+        boolean parked = parkingStrategy.parkVehicle(vehicle, spots);
+        if (parked) {
+            parkedVehicles.put(vehicle.getLicensePlate(), vehicle);
+        }
+        return parked;
+    }
+
+    // ... (remaining methods)
+}
+```
+
+### Example Usage
+
+Now you can easily switch between different parking strategies and create vehicles using the factory:
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        ParkingLot parkingLot = new ParkingLot(5, 5, 5, new FirstFitParkingStrategy());
+        
+        Vehicle car = VehicleFactory.createVehicle("car", "CAR123");
+        Vehicle bike = VehicleFactory.createVehicle("bike", "BIKE123");
+        
+        parkingLot.parkVehicle(car);
+        parkingLot.parkVehicle(bike);
+
+        // Switch to a different strategy
+        parkingLot.setParkingStrategy(new BestFitParkingStrategy());
+        // Continue parking vehicles...
+    }
+}
+```
+
+### Trade-offs and Benefits
+
+1. **Flexibility**: Using the Factory pattern allows you to easily add new vehicle types without modifying the existing code. The Strategy pattern allows you to change the parking behavior at runtime.
+
+2. **Single Responsibility Principle**: Each class has a single responsibility. The factory handles vehicle creation, while the strategies handle parking logic.
+
+3. **Extensibility**: New vehicle types and parking strategies can be added with minimal changes to existing code.
+
+4. **Code Clarity**: The code is easier to read and maintain since responsibilities are clearly separated.
+
+By applying these design patterns, the parking lot system becomes more modular and easier to extend, making it suitable for real-world scenarios where requirements may evolve over time.
