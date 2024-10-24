@@ -345,3 +345,168 @@ public class Main {
 4. **Code Clarity**: The code is easier to read and maintain since responsibilities are clearly separated.
 
 By applying these design patterns, the parking lot system becomes more modular and easier to extend, making it suitable for real-world scenarios where requirements may evolve over time.
+
+
+## Implement a Priority Queue to manage available parking spots.
+
+To improve the performance of the parking lot system by using a more efficient data structure, we can implement a **Priority Queue** to manage available parking spots. This will allow us to quickly find the most suitable parking spot based on the vehicle size or other criteria.
+
+### Modifications to Use a Priority Queue
+
+We'll utilize Java's `PriorityQueue` class, which provides a way to manage the parking spots based on their size. The priority queue will allow us to prioritize parking spots based on their size, making the parking operation more efficient.
+
+### Step 1: Implement a Comparator for Parking Spots
+
+First, we need to define a comparator to determine the order of the parking spots based on their size. This will help the priority queue to prioritize smaller (or more suitable) spots.
+
+```java
+import java.util.Comparator;
+
+public class ParkingSpotComparator implements Comparator<ParkingSpot> {
+    @Override
+    public int compare(ParkingSpot spot1, ParkingSpot spot2) {
+        return Integer.compare(spot1.getSize().ordinal(), spot2.getSize().ordinal());
+    }
+}
+```
+
+### Step 2: Modify the ParkingLot Class
+
+We'll replace the `List<ParkingSpot>` with a `PriorityQueue<ParkingSpot>` in the `ParkingLot` class to manage the parking spots more efficiently.
+
+#### Updated ParkingLot Class
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+import java.util.PriorityQueue;
+
+public class ParkingLot {
+    private PriorityQueue<ParkingSpot> availableSpots;
+    private Map<String, Vehicle> parkedVehicles;
+    private ParkingStrategy parkingStrategy;
+
+    public ParkingLot(int numCompact, int numLarge, int numMotorcycle, ParkingStrategy strategy) {
+        this.parkedVehicles = new HashMap<>();
+        this.parkingStrategy = strategy;
+
+        availableSpots = new PriorityQueue<>(new ParkingSpotComparator());
+
+        for (int i = 0; i < numCompact; i++) {
+            availableSpots.add(new ParkingSpot(VehicleSize.COMPACT));
+        }
+        for (int i = 0; i < numLarge; i++) {
+            availableSpots.add(new ParkingSpot(VehicleSize.LARGE));
+        }
+        for (int i = 0; i < numMotorcycle; i++) {
+            availableSpots.add(new ParkingSpot(VehicleSize.MOTORCYCLE));
+        }
+    }
+
+    public boolean parkVehicle(Vehicle vehicle) {
+        // Try to park the vehicle using the strategy
+        boolean parked = parkingStrategy.parkVehicle(vehicle, availableSpots);
+        if (parked) {
+            parkedVehicles.put(vehicle.getLicensePlate(), vehicle);
+        }
+        return parked;
+    }
+
+    public Vehicle removeVehicle(String licensePlate) {
+        Vehicle vehicle = parkedVehicles.remove(licensePlate);
+        if (vehicle != null) {
+            // Find the corresponding parking spot and make it available again
+            for (ParkingSpot spot : availableSpots) {
+                if (!spot.isAvailable() && spot.getSize() == vehicle.getSize()) {
+                    spot.remove();
+                    availableSpots.offer(spot); // Re-add the spot to the queue
+                    break;
+                }
+            }
+        }
+        return vehicle; // Return the removed vehicle
+    }
+
+    public int availableSpotsCount() {
+        return availableSpots.size();
+    }
+}
+```
+
+### Step 3: Modify the Parking Strategy
+
+Now, let's adjust the `FirstFitParkingStrategy` and `BestFitParkingStrategy` to work with the `PriorityQueue`.
+
+#### Updated FirstFitParkingStrategy
+
+```java
+public class FirstFitParkingStrategy implements ParkingStrategy {
+    @Override
+    public boolean parkVehicle(Vehicle vehicle, PriorityQueue<ParkingSpot> spots) {
+        for (ParkingSpot spot : spots) {
+            if (spot.park(vehicle)) {
+                spots.remove(spot); // Remove the spot from the queue if it is now occupied
+                return true;
+            }
+        }
+        return false; // No available spots
+    }
+}
+```
+
+#### Updated BestFitParkingStrategy
+
+```java
+public class BestFitParkingStrategy implements ParkingStrategy {
+    @Override
+    public boolean parkVehicle(Vehicle vehicle, PriorityQueue<ParkingSpot> spots) {
+        ParkingSpot bestSpot = null;
+        for (ParkingSpot spot : spots) {
+            if (spot.isAvailable() && spot.getSize() == vehicle.getSize()) {
+                if (bestSpot == null || bestSpot.getSize().ordinal() > spot.getSize().ordinal()) {
+                    bestSpot = spot;
+                }
+            }
+        }
+        if (bestSpot != null && bestSpot.park(vehicle)) {
+            spots.remove(bestSpot); // Remove the spot from the queue
+            return true;
+        }
+        return false; // No suitable spot found
+    }
+}
+```
+
+### Step 4: Example Usage
+
+You can now create the parking lot and use it as before:
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        ParkingLot parkingLot = new ParkingLot(5, 5, 5, new BestFitParkingStrategy());
+
+        Vehicle car = VehicleFactory.createVehicle("car", "CAR123");
+        Vehicle bike = VehicleFactory.createVehicle("bike", "BIKE123");
+        
+        parkingLot.parkVehicle(car);
+        parkingLot.parkVehicle(bike);
+
+        // Display available spots
+        System.out.println("Available spots: " + parkingLot.availableSpotsCount());
+    }
+}
+```
+
+### Trade-offs and Benefits
+
+1. **Efficiency**: Using a `PriorityQueue` allows for efficient retrieval of the best spot based on size. The time complexity for parking a vehicle is improved, particularly in scenarios with many parking spots.
+
+2. **Scalability**: The system can handle an increasing number of vehicles and spots without a significant drop in performance.
+
+3. **Code Clarity**: The separation of concerns continues to enhance readability and maintainability. The parking strategy implementation remains clean and modular.
+
+4. **Potential Drawbacks**: While using a priority queue improves efficiency for spot selection, it adds complexity. We need to ensure proper handling of the queue when vehicles are parked or removed. Additionally, if many vehicles of different sizes are parked and removed frequently, the queue management may incur overhead.
+
+By incorporating a priority queue, the parking lot system becomes more responsive and capable of handling varying demands while maintaining clear design principles.
+
