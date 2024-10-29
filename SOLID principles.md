@@ -219,3 +219,126 @@ class Switch {
 ### Summary
 
 Applying the SOLID principles leads to more robust and maintainable code. They are particularly useful in large systems where requirements may change over time. By adhering to these principles, you create systems that are easier to understand, extend, and modify.
+
+
+## Dependency Inversion Principle (DIP)
+
+**Definition**: The Dependency Inversion Principle states that high-level modules should not depend on low-level modules; both should depend on abstractions. Additionally, abstractions should not depend on details; details should depend on abstractions.
+
+### Key Concepts
+
+1. **High-Level Modules**: These are the modules that provide complex logic or functionality in your application. They typically represent the application's core behavior.
+
+2. **Low-Level Modules**: These are the modules that deal with specific implementations or lower-level details, such as data access, file operations, or hardware interactions.
+
+3. **Abstractions**: Interfaces or abstract classes that define contracts for behavior, allowing different implementations to be plugged in.
+
+### Explanation
+
+The principle encourages you to depend on interfaces (abstractions) rather than concrete implementations. This separation allows for greater flexibility and makes it easier to replace or change components without affecting the entire system.
+
+### Example
+
+Here’s an expanded example to illustrate the Dependency Inversion Principle:
+
+**Scenario**: Let's say you have a simple notification system that sends messages. Initially, it directly depends on a specific implementation (like Email).
+
+#### Without DIP (Violation)
+
+```java
+class EmailService {
+    public void sendEmail(String message) {
+        // Logic to send an email
+        System.out.println("Email sent: " + message);
+    }
+}
+
+class Notification {
+    private EmailService emailService;
+
+    public Notification() {
+        this.emailService = new EmailService(); // Tight coupling
+    }
+
+    public void notifyUser(String message) {
+        emailService.sendEmail(message);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Notification notification = new Notification();
+        notification.notifyUser("Hello, User!");
+    }
+}
+```
+
+**Issues**:
+- **Tight Coupling**: `Notification` is tightly coupled to `EmailService`. If you want to change how notifications are sent (e.g., via SMS), you would need to modify the `Notification` class.
+- **Difficult to Test**: Testing the `Notification` class in isolation becomes complicated since it directly depends on `EmailService`.
+
+#### With DIP (Compliant)
+
+```java
+interface NotificationService {
+    void notify(String message);
+}
+
+class EmailService implements NotificationService {
+    public void notify(String message) {
+        // Logic to send an email
+        System.out.println("Email sent: " + message);
+    }
+}
+
+class SMSService implements NotificationService {
+    public void notify(String message) {
+        // Logic to send an SMS
+        System.out.println("SMS sent: " + message);
+    }
+}
+
+class Notification {
+    private NotificationService notificationService;
+
+    // Dependency Injection via Constructor
+    public Notification(NotificationService notificationService) {
+        this.notificationService = notificationService; // Depend on abstraction
+    }
+
+    public void notifyUser(String message) {
+        notificationService.notify(message);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        NotificationService emailService = new EmailService();
+        Notification notification = new Notification(emailService);
+        notification.notifyUser("Hello, User!");
+
+        // If you want to use SMS instead:
+        NotificationService smsService = new SMSService();
+        Notification smsNotification = new Notification(smsService);
+        smsNotification.notifyUser("Hello, User!");
+    }
+}
+```
+
+**Benefits**:
+- **Loose Coupling**: The `Notification` class is now loosely coupled to `NotificationService`. You can easily change the notification method by passing a different implementation without modifying the `Notification` class.
+- **Easier Testing**: You can now easily mock `NotificationService` for unit tests, allowing for isolated testing of the `Notification` class.
+
+### Best Use Cases for DIP
+
+1. **Evolving Systems**: When building applications that are expected to evolve over time, use DIP to accommodate future changes without major rewrites.
+
+2. **Testing**: In scenarios requiring extensive unit testing, DIP allows you to mock dependencies, making tests more reliable and easier to implement.
+
+3. **Frameworks and Libraries**: When creating frameworks or libraries that other developers will use, implementing DIP allows them to extend your framework without modifying its core logic.
+
+4. **Microservices Architecture**: In microservices, where services interact with various external systems, DIP allows for flexibility in integrating different services or replacing them without major changes.
+
+### Summary
+
+The Dependency Inversion Principle is crucial for building robust, maintainable systems. By adhering to this principle, you promote loose coupling, making your codebase easier to manage and extend while improving testability.
