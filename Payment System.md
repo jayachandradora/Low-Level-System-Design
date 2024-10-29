@@ -265,3 +265,87 @@ boolean paymentSuccess = paymentProcessor.processPayment(loggingPaymentMethod, o
 ### Conclusion
 
 By applying SOLID principles and incorporating design patterns, we can enhance the flexibility and maintainability of the payment processing system. Each component has a clear responsibility, making it easier to test, extend, and modify the codebase as requirements evolve. The use of design patterns further decouples components, allowing for cleaner architecture and improved scalability.
+
+
+Certainly! Let's dive into the concepts of **high cohesion** and **low coupling** within the context of the provided payment processing system code, and explain their significance through practical use cases.
+
+### High Cohesion
+
+**Definition**: High cohesion refers to how closely related and focused the responsibilities of a single module (or class) are. A class with high cohesion has a well-defined purpose and its methods are related to that purpose, which enhances readability, maintainability, and reusability.
+
+#### Use Case in the Payment Processing System
+
+**Example**: The `Order` class
+
+```java
+public class Order {
+    private String orderId;
+    private double amount;
+    private String status; // e.g., "PENDING", "COMPLETED", "FAILED"
+
+    public Order(String orderId, double amount, String status) {
+        this.orderId = orderId;
+        this.amount = amount;
+        this.status = status;
+    }
+
+    // Getters and Setters
+    public String getOrderId() { return orderId; }
+    public double getAmount() { return amount; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+}
+```
+
+#### Explanation:
+
+- **Cohesive Responsibilities**: The `Order` class is responsible for managing order details, including the order ID, amount, and status. All methods in this class are directly related to the functionality of handling orders.
+  
+- **Benefits**:
+  - **Readability**: It’s clear that any method you call on an `Order` object pertains to the order itself.
+  - **Maintainability**: If changes are needed related to orders (like adding a new property), they can be localized within this class.
+  - **Reusability**: The `Order` class can be reused in other parts of the system where order management is necessary.
+
+### Low Coupling
+
+**Definition**: Low coupling refers to minimizing dependencies between different modules (or classes). When classes are loosely coupled, changes in one class are less likely to require changes in another, leading to a more flexible and maintainable system.
+
+#### Use Case in the Payment Processing System
+
+**Example**: The `PaymentProcessor` class and the `PaymentMethod` interface
+
+```java
+public class PaymentProcessor {
+    private PaymentGateway gateway;
+
+    public PaymentProcessor(PaymentGateway gateway) {
+        this.gateway = gateway;
+    }
+
+    public boolean processPayment(PaymentMethod method, Order order) {
+        if (method.pay(order.getAmount())) {
+            order.setStatus("COMPLETED");
+            return true;
+        } else {
+            order.setStatus("FAILED");
+            return false;
+        }
+    }
+}
+```
+
+#### Explanation:
+
+- **Loose Coupling**: The `PaymentProcessor` class depends on the `PaymentMethod` interface, not on specific implementations (like `CreditCardPayment`). This means it can work with any payment method that adheres to the `PaymentMethod` interface, allowing for easy extension.
+  
+- **Benefits**:
+  - **Flexibility**: If a new payment method (e.g., `PayPalPayment`) is added, you can introduce it without modifying the `PaymentProcessor` class.
+  - **Isolation**: Changes in the `CreditCardPayment` class won't affect the `PaymentProcessor` as long as the interface remains unchanged.
+  - **Testability**: You can easily create mock implementations of `PaymentMethod` for unit testing `PaymentProcessor`, facilitating more straightforward testing processes.
+
+### Summary
+
+- **High Cohesion** in the `Order` class makes it focused and easy to manage, ensuring that all methods are related to order functionalities.
+- **Low Coupling** in the interaction between `PaymentProcessor` and `PaymentMethod` allows for flexibility and adaptability, making the system resilient to changes.
+
+By maintaining high cohesion and low coupling, the design of the payment processing system becomes robust, easier to understand, and simpler to maintain and extend in the future.
