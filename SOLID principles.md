@@ -342,3 +342,92 @@ public class Main {
 ### Summary
 
 The Dependency Inversion Principle is crucial for building robust, maintainable systems. By adhering to this principle, you promote loose coupling, making your codebase easier to manage and extend while improving testability.
+
+## Open/Closed Principle (OCP)
+
+The Open/Closed Principle (OCP) is one of the five SOLID principles of object-oriented design. It states that software entities (classes, modules, functions, etc.) should be open for extension but closed for modification. This means you should be able to add new functionality to an existing class without changing its existing code.
+
+### Detailed Explanation
+
+1. **Open for Extension**: You should be able to extend the behavior of a class. This often involves creating new classes or interfaces that inherit or implement the existing functionality.
+
+2. **Closed for Modification**: The existing code should not be changed when adding new functionality. This reduces the risk of introducing bugs into existing code and helps maintain stability.
+
+### Use Cases
+
+1. **Plugin Systems**: In systems where you need to add new features (like an IDE), using interfaces and abstract classes allows you to implement new plugins without changing the core code.
+
+2. **Payment Processing**: If you have a payment system that supports multiple payment methods, you can create an interface like `PaymentMethod` and implement it for `CreditCard`, `PayPal`, etc. You can add new payment methods without modifying existing code.
+
+3. **Shape Drawing**: Consider a drawing application. Instead of modifying a single `Shape` class to add new shapes, you can create a base `Shape` interface and extend it with new shape classes like `Circle`, `Square`, etc.
+
+### Example in Java
+
+Let's illustrate the Open/Closed Principle with a payment processing example.
+
+#### Step 1: Define an Interface
+
+```java
+public interface PaymentMethod {
+    void pay(double amount);
+}
+```
+
+#### Step 2: Implement Concrete Classes
+
+```java
+public class CreditCardPayment implements PaymentMethod {
+    @Override
+    public void pay(double amount) {
+        System.out.println("Paying " + amount + " using Credit Card.");
+    }
+}
+
+public class PayPalPayment implements PaymentMethod {
+    @Override
+    public void pay(double amount) {
+        System.out.println("Paying " + amount + " using PayPal.");
+    }
+}
+```
+
+#### Step 3: Use in Client Code
+
+```java
+public class PaymentProcessor {
+    private List<PaymentMethod> paymentMethods;
+
+    public PaymentProcessor() {
+        paymentMethods = new ArrayList<>();
+    }
+
+    public void addPaymentMethod(PaymentMethod method) {
+        paymentMethods.add(method);
+    }
+
+    public void processPayments(double amount) {
+        for (PaymentMethod method : paymentMethods) {
+            method.pay(amount);
+        }
+    }
+}
+```
+
+#### Step 4: Extending Functionality
+
+To add a new payment method (e.g., `BitcoinPayment`), you simply create a new class without modifying the existing code:
+
+```java
+public class BitcoinPayment implements PaymentMethod {
+    @Override
+    public void pay(double amount) {
+        System.out.println("Paying " + amount + " using Bitcoin.");
+    }
+}
+```
+
+### Conclusion
+
+The Open/Closed Principle encourages developers to write more maintainable and flexible code. By designing your system to be extensible without modifying existing code, you reduce the risk of bugs and make your codebase easier to work with as requirements change. This principle is particularly useful in large projects where maintaining stability while adding features is critical.
+
+
