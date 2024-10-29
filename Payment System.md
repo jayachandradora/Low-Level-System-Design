@@ -176,6 +176,92 @@ public class PaymentSystemDemo {
 2. **Ticket Booking**: Handle payments for events, flights, or travel.
 3. **Flight Booking**: Process payments for airline tickets, including baggage fees and extras.
 
+Certainly! Let's explore the provided classes and their interactions through the lens of the SOLID principles and incorporate relevant design patterns. This will help improve the design, maintainability, and scalability of the payment processing system.
+
+### SOLID Principles
+
+1. **Single Responsibility Principle (SRP)**:
+   - Each class should have one reason to change.
+   - In the provided classes:
+     - `User`, `Order`, and `PaymentMethod` adhere to SRP as they manage user data, order details, and payment processes, respectively.
+     - `PaymentProcessor` is responsible for processing payments, and `PaymentGateway` handles interactions with external payment services.
+
+2. **Open/Closed Principle (OCP)**:
+   - Classes should be open for extension but closed for modification.
+   - The `PaymentMethod` interface allows for the addition of new payment methods (like `PayPalPayment`) without modifying existing code.
+   - You can extend the `PaymentGateway` class to support different payment providers without altering its interface.
+
+3. **Liskov Substitution Principle (LSP)**:
+   - Objects of a superclass should be replaceable with objects of a subclass without affecting the correctness of the program.
+   - Any class implementing `PaymentMethod` (like `CreditCardPayment` or any future payment class) should work seamlessly with `PaymentProcessor`.
+
+4. **Interface Segregation Principle (ISP)**:
+   - Clients should not be forced to depend on interfaces they do not use.
+   - The `PaymentMethod` interface is specific to payment methods. If more functionality is needed in the future, it’s better to create additional interfaces rather than cluttering existing ones.
+
+5. **Dependency Inversion Principle (DIP)**:
+   - High-level modules should not depend on low-level modules but rather on abstractions.
+   - The `PaymentProcessor` depends on the `PaymentMethod` interface and the `PaymentGateway`, allowing for easy swapping of implementations without altering higher-level logic.
+
+### Design Patterns
+
+1. **Strategy Pattern**:
+   - The `PaymentMethod` interface exemplifies the Strategy pattern, allowing different payment methods to be defined and used interchangeably.
+   - For example, you could implement `PayPalPayment` as another strategy without changing `PaymentProcessor`.
+
+2. **Factory Pattern**:
+   - To create instances of `PaymentMethod`, you could implement a Factory class that encapsulates the instantiation logic. This way, you can add new payment methods more easily.
+   ```java
+   public class PaymentMethodFactory {
+       public static PaymentMethod createPaymentMethod(String type, String... details) {
+           switch (type) {
+               case "CREDIT_CARD":
+                   return new CreditCardPayment(details[0], details[1]);
+               case "PAYPAL":
+                   return new PayPalPayment(details[0]);
+               default:
+                   throw new IllegalArgumentException("Unknown payment method type");
+           }
+       }
+   }
+   ```
+
+3. **Observer Pattern**:
+   - If you want to notify other components (like sending a confirmation email) when the order status changes, you could use the Observer pattern. The `Order` class can maintain a list of observers that get notified when its status changes.
+
+4. **Decorator Pattern**:
+   - If you want to add additional features to payment methods (like logging or applying discounts), you could use the Decorator pattern. This allows you to wrap existing payment methods with new behavior without changing their structure.
+   ```java
+   public class LoggingPaymentDecorator implements PaymentMethod {
+       private PaymentMethod paymentMethod;
+
+       public LoggingPaymentDecorator(PaymentMethod paymentMethod) {
+           this.paymentMethod = paymentMethod;
+       }
+
+       @Override
+       public boolean pay(double amount) {
+           System.out.println("Processing payment of " + amount);
+           return paymentMethod.pay(amount);
+       }
+   }
+   ```
+
+### Updated Example with Design Patterns
+
+Here’s how the payment processing system might look with these principles and patterns applied:
+
+```java
+// Factory Pattern Example
+PaymentMethod paymentMethod = PaymentMethodFactory.createPaymentMethod("CREDIT_CARD", "4111111111111111", "12/25");
+
+// Decorator Pattern Example
+PaymentMethod loggingPaymentMethod = new LoggingPaymentDecorator(paymentMethod);
+
+// Processing payment with the decorated method
+boolean paymentSuccess = paymentProcessor.processPayment(loggingPaymentMethod, order);
+```
+
 ### Conclusion
 
-This low-level design of a payment system provides a flexible and scalable approach for managing payments across various applications. By using design patterns like Strategy and encapsulation, we ensure that the system is both easy to maintain and extend as new requirements arise.
+By applying SOLID principles and incorporating design patterns, we can enhance the flexibility and maintainability of the payment processing system. Each component has a clear responsibility, making it easier to test, extend, and modify the codebase as requirements evolve. The use of design patterns further decouples components, allowing for cleaner architecture and improved scalability.
