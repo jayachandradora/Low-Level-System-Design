@@ -406,3 +406,4 @@ public class PaymentProcessor {
 - **Low Coupling** in the interaction between `PaymentProcessor` and `PaymentMethod` allows for flexibility and adaptability, making the system resilient to changes.
 
 By maintaining high cohesion and low coupling, the design of the payment processing system becomes robust, easier to understand, and simpler to maintain and extend in the future.
+
