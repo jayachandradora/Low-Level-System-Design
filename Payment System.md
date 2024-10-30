@@ -77,22 +77,79 @@ public interface PaymentMethod {
 #### 4. CreditCardPayment Class
 
 ```java
-public class CreditCardPayment implements PaymentMethod {
+public class Credit&DebitCardPayment implements PaymentMethod {
     private String cardNumber;
     private String expiryDate;
+    private String cardType; // Visa, MasterCard, Amex, etc.
 
-    public CreditCardPayment(String cardNumber, String expiryDate) {
+    public CreditCardPayment(String cardNumber, String expiryDate, String cardType) {
         this.cardNumber = cardNumber;
         this.expiryDate = expiryDate;
+        this.cardType = cardType;
     }
 
     @Override
     public boolean pay(double amount) {
         // Payment processing logic
-        // Validate card details and process payment through PaymentProcessor
+        // Validate card details and process payment
         return true; // Assume payment is successful for simplicity
     }
 }
+
+// PayPal Payment
+public class PayPalPayment implements PaymentMethod {
+    private String email;
+
+    public PayPalPayment(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public boolean pay(double amount) {
+        // PayPal payment processing logic
+        return true; // Assume payment is successful for simplicity
+    }
+}
+
+// Internet Banking Payment
+public class InternetBankingPayment implements PaymentMethod {
+    private String bankAccountNumber;
+
+    public InternetBankingPayment(String bankAccountNumber) {
+        this.bankAccountNumber = bankAccountNumber;
+    }
+
+    @Override
+    public boolean pay(double amount) {
+        // Internet banking payment processing logic
+        return true; // Assume payment is successful for simplicity
+    }
+}
+
+// UPI Payment
+public class UpiPayment implements PaymentMethod {
+    private String upiId;
+
+    public UpiPayment(String upiId) {
+        this.upiId = upiId;
+    }
+
+    @Override
+    public boolean pay(double amount) {
+        // UPI payment processing logic
+        return true; // Assume payment is successful for simplicity
+    }
+}
+
+// Cash on Delivery Payment
+public class CashOnDeliveryPayment implements PaymentMethod {
+    @Override
+    public boolean pay(double amount) {
+        // Logic for cash on delivery
+        return true; // Assume payment is successful for simplicity
+    }
+}
+
 ```
 
 #### 5. PaymentProcessor Class
