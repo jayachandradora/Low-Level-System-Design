@@ -22,12 +22,14 @@ Designing a thread-safe LRU (Least Recently Used) cache in Java that meets the s
 class Node {
     int key;
     int value;
+    long expiryTime; // Time when this entry should expire
     Node prev;
     Node next;
 
-    public Node(int key, int value) {
+    public Node(int key, int value, long ttl) {
         this.key = key;
         this.value = value;
+        this.expiryTime = System.currentTimeMillis() + ttl; // Set expiry time
     }
 }
 ```
@@ -49,8 +51,8 @@ class LRUCache {
     public LRUCache(int capacity) {
         this.capacity = capacity;
         this.cache = new HashMap<>();
-        this.head = new Node(0, 0); // Dummy head
-        this.tail = new Node(0, 0); // Dummy tail
+        this.head = new Node(0, 0, 0); // Dummy head
+        this.tail = new Node(0, 0, 0); // Dummy tail
         head.next = tail;
         tail.prev = head;
         this.lock = new ReentrantLock();
@@ -70,11 +72,20 @@ class LRUCache {
         head.next = node;
     }
 
+    private boolean isExpired(Node node) {
+        return System.currentTimeMillis() > node.expiryTime;
+    }
+
     public int get(int key) {
         lock.lock();
         try {
             if (cache.containsKey(key)) {
                 Node node = cache.get(key);
+                if (isExpired(node)) {
+                    remove(node);
+                    cache.remove(key);
+                    return -1; // Entry expired
+                }
                 remove(node);
                 addToFront(node);
                 return node.value;
@@ -85,11 +96,11 @@ class LRUCache {
         }
     }
 
-    public void put(int key, int value) {
+    public void put(int key, int value, long ttl) {
         lock.lock();
         try {
             if (cache.containsKey(key)) {
-                remove(cache.get(key));
+                remove(cache.get(key)); // Remove existing entry
             } else if (cache.size() >= capacity) {
                 // Remove the least recently used item (tail's previous node)
                 Node lruNode = tail.prev;
@@ -97,12 +108,30 @@ class LRUCache {
                 cache.remove(lruNode.key);
             }
 
-            Node newNode = new Node(key, value);
+            Node newNode = new Node(key, value, ttl);
             cache.put(key, newNode);
             addToFront(newNode);
         } finally {
             lock.unlock();
         }
+    }
+}
+```
+
+```java
+public class Main {
+    public static void main(String[] args) throws InterruptedException {
+        LRUCache cache = new LRUCache(2); // Capacity of 2
+
+        cache.put(1, 100, 5000); // Key 1 with value 100 and TTL of 5000 ms
+        cache.put(2, 200, 10000); // Key 2 with value 200 and TTL of 10000 ms
+
+        System.out.println(cache.get(1)); // Returns 100
+
+        Thread.sleep(6000); // Wait for 6 seconds, key 1 should expire
+
+        System.out.println(cache.get(1)); // Returns -1 (expired)
+        System.out.println(cache.get(2)); // Returns 200 (still valid)
     }
 }
 ```
@@ -135,4 +164,4 @@ class LRUCache {
 
 ### Conclusion
 
-This Java implementation of an LRU cache adheres to solid design principles, promoting maintainability, scalability, and robustness. By combining these principles with efficient data structures, we achieve a thread-safe cache that performs both `put` and `get` operations in O(1) time complexity.
+This Java implementation of an LRU cache adheres to solid design principles, promoting maintainability, scalability, and robustness. By combining these principles with efficient data structures, we achieve a thread-safe cache that performs both `put` and `get` operations in O(1) time complexity.implementation of the LRU Cache with TTL integrates the time-to-live feature while maintaining efficient operations and thread safety. The design adheres to solid principles, ensuring that the cache remains robust, maintainable, and scalable. The addition of TTL adds significant functionality by allowing cache entries to expire automatically, which can be essential in scenarios where data validity is time-sensitive.
