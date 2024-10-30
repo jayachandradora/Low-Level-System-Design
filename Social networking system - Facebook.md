@@ -2,9 +2,6 @@
 
 Below is a low-level design of a social networking system that adheres to SOLID principles, uses appropriate design patterns, and ensures low coupling and high cohesion. The implementation includes the classes you mentioned, structured to follow best practices.
 
-Certainly! Below is a structured approach for saving the content as a Markdown file suitable for a GitHub repository. You can save this content into a file named `SocialNetworkDesign.md`.
-
-```markdown
 # Designing a Social Network Like Facebook
 
 ## Requirements
@@ -115,9 +112,6 @@ Demonstrates the usage of the social networking system by:
 - Liking posts
 - Commenting on posts
 - Retrieving newsfeed and notifications
-```
-
-You can create a file named `SocialNetworkDesign.md`, copy the above content into it, and then commit it to your GitHub repository.
 
 
 ### Summary of Changes
