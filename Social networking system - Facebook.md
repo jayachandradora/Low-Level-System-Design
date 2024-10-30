@@ -2,6 +2,136 @@
 
 Below is a low-level design of a social networking system that adheres to SOLID principles, uses appropriate design patterns, and ensures low coupling and high cohesion. The implementation includes the classes you mentioned, structured to follow best practices.
 
+Certainly! Below is a structured approach for saving the content as a Markdown file suitable for a GitHub repository. You can save this content into a file named `SocialNetworkDesign.md`.
+
+```markdown
+# Designing a Social Network Like Facebook
+
+## Requirements
+
+### User Registration and Authentication
+- Users should be able to create an account with their personal information, such as name, email, and password.
+- Users should be able to log in and log out of their accounts securely.
+
+### User Profiles
+- Each user should have a profile with their information, such as profile picture, bio, and interests.
+- Users should be able to update their profile information.
+
+### Friend Connections
+- Users should be able to send friend requests to other users.
+- Users should be able to accept or decline friend requests.
+- Users should be able to view their list of friends.
+
+### Posts and Newsfeed
+- Users should be able to create posts with text, images, or videos.
+- Users should be able to view a newsfeed consisting of posts from their friends and their own posts.
+- The newsfeed should be sorted in reverse chronological order.
+
+### Likes and Comments
+- Users should be able to like and comment on posts.
+- Users should be able to view the list of likes and comments on a post.
+
+### Privacy and Security
+- Users should be able to control the visibility of their posts and profile information.
+- The system should enforce secure access control to ensure data privacy.
+
+### Notifications
+- Users should receive notifications for events such as friend requests, likes, comments, and mentions.
+- Notifications should be delivered in real-time.
+
+### Scalability and Performance
+- The system should be designed to handle a large number of concurrent users and high traffic load.
+- The system should be scalable and efficient in terms of resource utilization.
+
+## Classes, Interfaces, and Enumerations
+
+### User Class
+Represents a user in the social networking system, containing properties such as:
+- ID
+- Name
+- Email
+- Password
+- Profile picture
+- Bio
+- List of friends
+- List of posts
+
+### Post Class
+Represents a post created by a user, containing properties such as:
+- ID
+- User ID
+- Content
+- Image URLs
+- Video URLs
+- Timestamp
+- Likes
+- Comments
+
+### Comment Class
+Represents a comment made by a user on a post, containing properties such as:
+- ID
+- User ID
+- Post ID
+- Content
+- Timestamp
+
+### Notification Class
+Represents a notification generated for a user, containing properties such as:
+- ID
+- User ID
+- Notification type
+- Content
+- Timestamp
+
+### NotificationType Enum
+Defines the different types of notifications, such as:
+- Friend request
+- Friend request accepted
+- Like
+- Comment
+- Mention
+
+### SocialNetworkingService Class
+The main class that manages the social networking system. It follows the Singleton pattern to ensure only one instance of the service exists. This class provides methods for:
+- User registration
+- Login
+- Profile updates
+- Friend requests
+- Post creation
+- Newsfeed generation
+- Likes
+- Comments
+- Notifications
+
+### Multi-threading
+Achieved using concurrent data structures such as `ConcurrentHashMap` and `CopyOnWriteArrayList` to handle concurrent access to shared resources.
+
+### SocialNetworkingDemo Class
+Demonstrates the usage of the social networking system by:
+- Registering users
+- Logging in
+- Sending friend requests
+- Creating posts
+- Liking posts
+- Commenting on posts
+- Retrieving newsfeed and notifications
+```
+
+You can create a file named `SocialNetworkDesign.md`, copy the above content into it, and then commit it to your GitHub repository.
+
+
+### Summary of Changes
+
+1. **User Class Enhancements**:
+   - Added `following` and `followers` sets to manage user relationships.
+   - Methods for `followUser`, `unfollowUser`, `addFollower`, and `removeFollower` were implemented.
+
+2. **SocialNetworkingService Class Enhancements**:
+   - Added `followUser` and `unfollowUser` methods to handle follow/unfollow actions and update user relationships.
+
+3. **Demo Class**:
+   - Updated to demonstrate the new follow and unfollow functionality.
+
 ### 1. User Class
 
 ```java
