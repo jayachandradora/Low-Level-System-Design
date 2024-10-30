@@ -191,3 +191,45 @@ public class PubSubExample {
 
 ### Conclusion
 This design leverages SOLID principles, design patterns, and good software engineering practices to create a flexible, maintainable, and extensible Pub-Sub system in Java. It ensures low coupling and high cohesion, making it easier to add new features or modify existing ones without affecting other parts of the system.
+
+The designed Pub-Sub system effectively leverages SOLID principles as follows:
+
+### 1. Single Responsibility Principle (SRP)
+
+Each class in the design has a distinct responsibility:
+
+- **`Subscriber` Interface**: Defines the contract for subscribers to receive updates, ensuring that any subscriber only handles its message processing logic.
+- **`Publisher` Interface**: Manages publishing messages to subscribers, isolating the publishing logic from message handling.
+- **`PubSubSystem` Class**: Centralizes the subscription and publishing logic without being burdened with message processing details.
+- **`MessageHandler` Interface and Implementations**: Each handler is responsible for a specific type of message handling (e.g., logging, notifications).
+
+### 2. Open/Closed Principle (OCP)
+
+The design allows for extension without modification:
+
+- **New Subscribers**: Additional subscriber classes can be created (e.g., `ConcreteSubscriberC`) without changing the existing subscriber implementations or the `PubSubSystem`.
+- **New Message Handlers**: You can introduce new message handlers (e.g., `EmailNotificationHandler`) without modifying the existing handler implementations or the core logic.
+
+### 3. Liskov Substitution Principle (LSP)
+
+The system ensures that derived classes can be used interchangeably with their base classes:
+
+- Any implementation of the `Subscriber` interface (like `ConcreteSubscriberA` or `ConcreteSubscriberB`) can be substituted in the system without affecting its functionality. The `PubSubSystem` treats all subscribers uniformly based on their common interface.
+
+### 4. Interface Segregation Principle (ISP)
+
+Clients are not forced to implement interfaces they do not use:
+
+- Subscribers implement only the `update` and `getSubscriptionTopic` methods, which are relevant to them. They are not burdened with methods they don’t need. Similarly, different message handlers can implement their specific handling logic without unnecessary methods.
+
+### 5. Dependency Inversion Principle (DIP)
+
+High-level modules depend on abstractions rather than concrete implementations:
+
+- The `PubSubSystem` is not tightly coupled with specific subscriber implementations. It interacts through the `Subscriber` interface, allowing it to function independently of the actual implementations.
+- The `SubscriberFactory` abstracts the creation of subscribers, allowing the system to remain decoupled from the specific subscriber types being used.
+
+### Summary
+
+The design of the Pub-Sub system adheres to the SOLID principles by ensuring clear responsibilities, promoting extensibility, allowing substitutability, reducing unnecessary dependencies, and adhering to interface contracts. This results in a flexible, maintainable, and scalable architecture that can evolve over time without requiring significant changes to existing code.
+
