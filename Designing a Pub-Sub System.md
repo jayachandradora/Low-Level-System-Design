@@ -233,3 +233,43 @@ High-level modules depend on abstractions rather than concrete implementations:
 
 The design of the Pub-Sub system adheres to the SOLID principles by ensuring clear responsibilities, promoting extensibility, allowing substitutability, reducing unnecessary dependencies, and adhering to interface contracts. This results in a flexible, maintainable, and scalable architecture that can evolve over time without requiring significant changes to existing code.
 
+The design of the Pub-Sub system effectively embodies the principles of low coupling and high cohesion, leading to a robust and maintainable architecture. Here’s how each principle is leveraged:
+
+## Low Coupling
+
+Low coupling means that components in a system have minimal dependencies on each other, making it easier to modify or replace components without affecting the entire system.
+
+1. **Use of Interfaces**: 
+   - The system employs interfaces (`Subscriber`, `Publisher`, `MessageHandler`) to define contracts for interactions. This decouples the concrete implementations from their usage. For example, `PubSubSystem` interacts with any `Subscriber` without knowing the specifics of each subscriber's implementation.
+
+2. **Dynamic Subscription**:
+   - Subscribers can be added or removed dynamically. The `PubSubSystem` does not need to be modified to accommodate new subscriber types; it simply works with the `Subscriber` interface.
+
+3. **Factory Pattern**:
+   - The `SubscriberFactory` decouples the creation of subscriber instances from their usage in the system. This means the `PubSubSystem` does not need to know about the specific classes of subscribers being instantiated, promoting separation of concerns.
+
+4. **Independent Message Handlers**:
+   - Message handling logic is encapsulated in separate classes that implement the `MessageHandler` interface. This means that changes in message processing (like adding new handlers) do not affect the publisher or the subscribers directly.
+
+## High Cohesion
+
+High cohesion refers to how closely related and focused the responsibilities of a single module or class are. Classes with high cohesion have well-defined roles, making them easier to understand and maintain.
+
+1. **Dedicated Responsibilities**:
+   - Each class has a specific role: 
+     - `PubSubSystem` manages subscriptions and message distribution.
+     - `ConcreteSubscriberA` and `ConcreteSubscriberB` implement specific behaviors for receiving messages.
+     - `MessageHandler` implementations (e.g., `LoggingMessageHandler`, `NotificationMessageHandler`) handle distinct message-processing strategies.
+
+2. **Clear Interfaces**:
+   - Interfaces are focused on specific actions, such as handling messages or publishing them. This clarity ensures that each component only exposes relevant functionality, promoting higher cohesion.
+
+3. **Encapsulation of Logic**:
+   - Each subscriber encapsulates its logic for processing messages. For example, if `ConcreteSubscriberA` needs to format messages differently, it can do so within its own class without affecting other subscribers or the `PubSubSystem`.
+
+4. **Behavioral Grouping**:
+   - Related classes and interfaces are organized around common responsibilities, like message handling. This organization helps to keep the system modular and coherent.
+
+### Summary
+
+In summary, the design of the Pub-Sub system achieves low coupling through the use of interfaces, dynamic subscription mechanisms, and the factory pattern, allowing components to evolve independently. It achieves high cohesion by assigning well-defined roles to each class, ensuring that related responsibilities are grouped together and that each component remains focused on a specific task. This combination leads to a flexible, maintainable, and extensible system architecture.
