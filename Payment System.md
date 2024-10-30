@@ -74,7 +74,7 @@ public interface PaymentMethod {
 }
 ```
 
-#### 4. Credit & Debit Card, UPI, Net Banking & Cash Payment Class
+#### 4. Credit & Debit Card, UPI, Net Banking & Cash On Delivery Payment Class
 
 ```java
 public class Credit&DebitCardPayment implements PaymentMethod {
