@@ -6,7 +6,9 @@ Below is a low-level design of a social networking system that adheres to SOLID 
 
 ```java
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class User {
     private final String id;
@@ -15,8 +17,10 @@ public class User {
     private String password;
     private String profilePicture;
     private String bio;
-    private final List<String> friends;
-    private final List<Post> posts;
+    private final List<String> friends; // Friends list
+    private final List<Post> posts; // User posts
+    private final Set<String> following; // Users this user is following
+    private final Set<String> followers; // Users following this user
 
     public User(String id, String name, String email, String password) {
         this.id = id;
@@ -25,6 +29,8 @@ public class User {
         this.password = password;
         this.friends = new ArrayList<>();
         this.posts = new ArrayList<>();
+        this.following = new HashSet<>();
+        this.followers = new HashSet<>();
     }
 
     // Getters and Setters...
@@ -35,6 +41,30 @@ public class User {
 
     public void addPost(Post post) {
         posts.add(post);
+    }
+
+    public void followUser(String userId) {
+        following.add(userId);
+    }
+
+    public void unfollowUser(String userId) {
+        following.remove(userId);
+    }
+
+    public void addFollower(String userId) {
+        followers.add(userId);
+    }
+
+    public void removeFollower(String userId) {
+        followers.remove(userId);
+    }
+
+    public List<String> getFollowing() {
+        return new ArrayList<>(following);
+    }
+
+    public List<String> getFollowers() {
+        return new ArrayList<>(followers);
     }
 
     // Other user-related methods...
@@ -191,6 +221,26 @@ public class SocialNetworkingService {
         // Implementation for commenting on a post...
     }
 
+    public void followUser(String followerId, String followeeId) {
+        User follower = users.get(followerId);
+        User followee = users.get(followeeId);
+        if (follower != null && followee != null) {
+            follower.followUser(followeeId);
+            followee.addFollower(followerId);
+            // Optionally send notification to followee
+        }
+    }
+
+    public void unfollowUser(String followerId, String followeeId) {
+        User follower = users.get(followerId);
+        User followee = users.get(followeeId);
+        if (follower != null && followee != null) {
+            follower.unfollowUser(followeeId);
+            followee.removeFollower(followerId);
+            // Optionally send notification to followee
+        }
+    }
+
     public List<Post> getNewsFeed(String userId) {
         // Implementation to generate newsfeed...
         return new ArrayList<>(posts);
@@ -205,6 +255,7 @@ public class SocialNetworkingService {
         return String.valueOf(System.currentTimeMillis());
     }
 }
+
 ```
 
 ### 7. SocialNetworkingDemo Class
@@ -217,13 +268,17 @@ public class SocialNetworkingDemo {
         // Register users
         sns.registerUser("1", "Alice", "alice@example.com", "password123");
         sns.registerUser("2", "Bob", "bob@example.com", "password456");
+        sns.registerUser("3", "Charlie", "charlie@example.com", "password789");
 
         // User login
         User alice = sns.login("alice@example.com", "password123");
         User bob = sns.login("bob@example.com", "password456");
+        User charlie = sns.login("charlie@example.com", "password789");
 
-        // Send friend request
-        sns.sendFriendRequest(alice.getId(), bob.getId());
+        // Follow and unfollow users
+        sns.followUser(alice.getId(), bob.getId());
+        sns.followUser(bob.getId(), charlie.getId());
+        sns.unfollowUser(alice.getId(), bob.getId());
 
         // Create posts
         sns.createPost(alice.getId(), "Hello, world!");
@@ -240,6 +295,7 @@ public class SocialNetworkingDemo {
         sns.getNotifications(bob.getId());
     }
 }
+
 ```
 
 ### Key Considerations
