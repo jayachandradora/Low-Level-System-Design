@@ -1,0 +1,193 @@
+# Designing a Pub-Sub System
+
+Designing a Pub-Sub (Publisher-Subscriber) system in Java while adhering to SOLID principles, leveraging design patterns, and ensuring low coupling and high cohesion involves a structured approach. Here’s a detailed design that incorporates these aspects.
+
+### 1. SOLID Principles
+
+- **Single Responsibility Principle (SRP)**: Each class should have one reason to change.
+- **Open/Closed Principle (OCP)**: Classes should be open for extension but closed for modification.
+- **Liskov Substitution Principle (LSP)**: Objects of a superclass should be replaceable with objects of a subclass.
+- **Interface Segregation Principle (ISP)**: Clients should not be forced to depend on interfaces they do not use.
+- **Dependency Inversion Principle (DIP)**: High-level modules should not depend on low-level modules. Both should depend on abstractions.
+
+### 2. Design Patterns
+
+- **Observer Pattern**: To manage the relationship between publishers and subscribers.
+- **Strategy Pattern**: For different message handling strategies.
+- **Factory Pattern**: To create instances of subscribers or message processors dynamically.
+
+### 3. Components of the System
+
+#### 3.1 Interfaces
+
+```java
+public interface Subscriber {
+    void update(String message);
+    String getSubscriptionTopic();
+}
+
+public interface Publisher {
+    void publish(String topic, String message);
+}
+
+public interface MessageHandler {
+    void handle(String message);
+}
+```
+
+#### 3.2 Message Class
+
+```java
+public class Message {
+    private final String content;
+
+    public Message(String content) {
+        this.content = content;
+    }
+
+    public String getContent() {
+        return content;
+    }
+}
+```
+
+#### 3.3 PubSub System
+
+```java
+import java.util.*;
+
+public class PubSubSystem {
+    private final Map<String, List<Subscriber>> subscribersMap = new HashMap<>();
+
+    public void subscribe(Subscriber subscriber) {
+        String topic = subscriber.getSubscriptionTopic();
+        subscribersMap.computeIfAbsent(topic, k -> new ArrayList<>()).add(subscriber);
+    }
+
+    public void unsubscribe(Subscriber subscriber) {
+        String topic = subscriber.getSubscriptionTopic();
+        List<Subscriber> subscribers = subscribersMap.get(topic);
+        if (subscribers != null) {
+            subscribers.remove(subscriber);
+        }
+    }
+
+    public void publish(String topic, String message) {
+        List<Subscriber> subscribers = subscribersMap.get(topic);
+        if (subscribers != null) {
+            for (Subscriber subscriber : subscribers) {
+                subscriber.update(message);
+            }
+        }
+    }
+}
+```
+
+### 4. Concrete Subscribers
+
+```java
+public class ConcreteSubscriberA implements Subscriber {
+    @Override
+    public void update(String message) {
+        System.out.println("Subscriber A received: " + message);
+    }
+
+    @Override
+    public String getSubscriptionTopic() {
+        return "topic1";
+    }
+}
+
+public class ConcreteSubscriberB implements Subscriber {
+    @Override
+    public void update(String message) {
+        System.out.println("Subscriber B received: " + message);
+    }
+
+    @Override
+    public String getSubscriptionTopic() {
+        return "topic2";
+    }
+}
+```
+
+### 5. Message Handlers
+
+```java
+public class LoggingMessageHandler implements MessageHandler {
+    @Override
+    public void handle(String message) {
+        System.out.println("Logging message: " + message);
+    }
+}
+
+public class NotificationMessageHandler implements MessageHandler {
+    @Override
+    public void handle(String message) {
+        System.out.println("Sending notification: " + message);
+    }
+}
+```
+
+### 6. Factory Pattern for Subscribers
+
+```java
+public class SubscriberFactory {
+    public static Subscriber createSubscriber(String type) {
+        switch (type) {
+            case "A":
+                return new ConcreteSubscriberA();
+            case "B":
+                return new ConcreteSubscriberB();
+            default:
+                throw new IllegalArgumentException("Unknown subscriber type: " + type);
+        }
+    }
+}
+```
+
+### 7. Example Usage
+
+```java
+public class PubSubExample {
+    public static void main(String[] args) {
+        PubSubSystem pubSubSystem = new PubSubSystem();
+
+        // Create subscribers using the factory
+        Subscriber subscriberA = SubscriberFactory.createSubscriber("A");
+        Subscriber subscriberB = SubscriberFactory.createSubscriber("B");
+
+        // Subscribe to topics
+        pubSubSystem.subscribe(subscriberA);
+        pubSubSystem.subscribe(subscriberB);
+
+        // Publish messages
+        pubSubSystem.publish("topic1", "Hello to Topic 1");
+        pubSubSystem.publish("topic2", "Hello to Topic 2");
+        
+        // Unsubscribe and demonstrate
+        pubSubSystem.unsubscribe(subscriberB);
+        pubSubSystem.publish("topic2", "Subscriber B should not receive this!");
+    }
+}
+```
+
+### 8. Enhancements and Considerations
+
+#### 8.1 Thread Safety
+- Use `ConcurrentHashMap` for the `subscribersMap` to ensure thread safety.
+
+#### 8.2 Message Filtering
+- Implement filtering in the subscriber to allow for more granular control over which messages to receive.
+
+#### 8.3 Scalability
+- For larger applications, consider using message brokers like Kafka or RabbitMQ for decoupled communication.
+
+#### 8.4 Persistence
+- Store messages for offline subscribers using a database or a persistent queue.
+
+#### 8.5 Error Handling
+- Implement error handling and logging for message delivery failures.
+
+### Conclusion
+This design leverages SOLID principles, design patterns, and good software engineering practices to create a flexible, maintainable, and extensible Pub-Sub system in Java. It ensures low coupling and high cohesion, making it easier to add new features or modify existing ones without affecting other parts of the system.
